@@ -1,7 +1,8 @@
 #Simon Yip CSCI 49662 Language Technology
 # Word2Vec.py was taken from Tensorflow Github Repository
 # Modified to take 2 sentences as user input and find the cosine difference between them 
-#
+# 3/28/19 Modified to account for changes in TF library
+# change user input to continuous instead of one instance per run
 #==============================================================================
 # Copyright 2015 The TensorFlow Authors. All Rights Reserved.
 #
@@ -208,7 +209,7 @@ with graph.as_default():
   init = tf.global_variables_initializer()
 
 # Step 5: Begin training.
-num_steps = 100001 #100001
+num_steps = 10001 #100001
 
 with tf.Session(graph=graph) as session:
   # We must initialize all variables before we use them.
@@ -290,6 +291,15 @@ def balancesentence(s1,s2):		#adds 0's to a sentence vector until both are the s
 	while(len(s2)<len(s1)):
 		s2.append(0)			
 		
+def findDistanceVector(words,list):
+	for i in range(len(words)-1):
+		newWord1=words[i]
+		x1,y1=getwordcoord(low_dim_embs,labels,newWord1)
+		newWord2=words[i+1]
+		x2,y2=getwordcoord(low_dim_embs,labels,newWord2)
+		distance=getdistance(x1,y1,x2,y2)
+		list.append(distance)		
+		
 # pylint: disable=g-import-not-at-top
 from sklearn.manifold import TSNE
 import matplotlib.pyplot as plt
@@ -305,6 +315,7 @@ plot_with_labels(low_dim_embs, labels, os.path.join(gettempdir(), 'tsne.png'))
 #	a=labels[i]
 #	print (a)
 
+'''
 sentence1=input("Enter a sentence\n")	#ask user for sentences to analyze and preprocess
 lower_s1=sentence1.lower()
 split1=lower_s1.split()
@@ -317,6 +328,7 @@ print (split1)
 print (split2)
 lengthsofs1=[]
 lengthsofs2=[]
+
 
 for i in range(len(split1)-1):	#loop that finds the location of each word
 	word1=split1[i]
@@ -333,7 +345,29 @@ for i in range(len(split2)-1):	#loop that finds the location of each word
 	x2,y2=getwordcoord(low_dim_embs,labels,word2)
 	distance=getdistance(x1,y1,x2,y2)
 	lengthsofs2.append(distance)		#appends distance to list
+'''
+
+while(True):	
+	sentence1=input("Enter a sentence or enter N to stop\n")	#ask user for sentences to analyze and preprocess
+	if sentence1=="N":
+		print ("Exiting program")
+		break
+	lower_s1=sentence1.lower()
+	split1=lower_s1.split()
+	length1=len(split1)
+	sentence2=input("Enter another sentence\n")  
+	lower_s2=sentence2.lower()
+	split2=lower_s2.split()
+	length2=len(split2)  
+	print (split1)
+	print (split2)
 	
+lengthsofs1=[]
+lengthsofs2=[]	
+
+findDistanceVector(split1,lengthsofs1)
+findDistanceVector(split2,lengthsofs2)
+
 balancesentence(lengthsofs1,lengthsofs2)	#equalize number of elements in each list
 print (lengthsofs1)
 print (lengthsofs2) 	
