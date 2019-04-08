@@ -311,42 +311,6 @@ labels = [reverse_dictionary[i] for i in xrange(plot_only)]
 plot_with_labels(low_dim_embs, labels, os.path.join(gettempdir(), 'tsne.png'))
 
 
-#for i in range(len(labels)):		#used to look at vocabulary
-#	a=labels[i]
-#	print (a)
-
-'''
-sentence1=input("Enter a sentence\n")	#ask user for sentences to analyze and preprocess
-lower_s1=sentence1.lower()
-split1=lower_s1.split()
-length1=len(split1)
-sentence2=input("Enter another sentence\n")  
-lower_s2=sentence2.lower()
-split2=lower_s2.split()
-length2=len(split2)  
-print (split1)
-print (split2)
-lengthsofs1=[]
-lengthsofs2=[]
-
-
-for i in range(len(split1)-1):	#loop that finds the location of each word
-	word1=split1[i]
-	x1,y1=getwordcoord(low_dim_embs,labels,word1)	
-	word2=split1[i+1]			#finds distance between each word
-	x2,y2=getwordcoord(low_dim_embs,labels,word2)
-	distance=getdistance(x1,y1,x2,y2)
-	lengthsofs1.append(distance)		#appends distance to list
-
-for i in range(len(split2)-1):	#loop that finds the location of each word
-	word1=split2[i]
-	x1,y1=getwordcoord(low_dim_embs,labels,word1)
-	word2=split2[i+1]			#finds distance between each word
-	x2,y2=getwordcoord(low_dim_embs,labels,word2)
-	distance=getdistance(x1,y1,x2,y2)
-	lengthsofs2.append(distance)		#appends distance to list
-'''
-
 while(True):	
 	sentence1=input("Enter a sentence or enter N to stop\n")	#ask user for sentences to analyze and preprocess
 	if sentence1=="N":
@@ -362,16 +326,16 @@ while(True):
 	print (split1)
 	print (split2)
 	
-lengthsofs1=[]
-lengthsofs2=[]	
+	lengthsofs1=[]
+	lengthsofs2=[]	
 
-findDistanceVector(split1,lengthsofs1)
-findDistanceVector(split2,lengthsofs2)
+	findDistanceVector(split1,lengthsofs1)
+	findDistanceVector(split2,lengthsofs2)
 
-balancesentence(lengthsofs1,lengthsofs2)	#equalize number of elements in each list
-print (lengthsofs1)
-print (lengthsofs2) 	
+	balancesentence(lengthsofs1,lengthsofs2)	#equalize number of elements in each list
+	print (lengthsofs1)
+	print (lengthsofs2) 	
 
-from scipy import spatial					
-sentence_difference=spatial.distance.cosine(lengthsofs1,lengthsofs2)	
-print (sentence_difference)		#calculate sentence difference and print
+	from scipy import spatial					
+	sentence_difference=spatial.distance.cosine(lengthsofs1,lengthsofs2)	
+	print (sentence_difference)		#calculate sentence difference and print
